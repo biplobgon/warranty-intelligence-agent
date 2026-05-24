@@ -1,25 +1,56 @@
 .git
 .gitignore
+.gitattributes
 .venv
 venv
 __pycache__
 *.pyc
+*.pyo
 .pytest_cache
 .ruff_cache
 .mypy_cache
 .coverage
 htmlcov
+.tox
 .idea
 .vscode
+
+# Large / generated
 notebooks
 data/raw
 data/processed
+data/synthetic/warranty_claims.csv
+data/synthetic/vehicle_telemetry.csv
 docs/screenshots
 docs/diagrams
 demos
+artifacts
+generated
+out
+output
+tmp
 *.log
 mlruns
 mlartifacts
+node_modules
+
+# Secrets / env
 .env
 .env.*
 !.env.example
+secrets/
+*.pem
+*.key
+
+# Terraform / infra state (not needed in image)
+.terraform/
+*.tfstate
+*.tfstate.*
+infrastructure/terraform
+infrastructure/kubernetes
+infrastructure/helm
+infrastructure/monitoring
+
+# Agent memory (not needed at runtime, only at dev time)
+.claude
+.cursor

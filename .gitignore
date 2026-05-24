@@ -42,9 +42,15 @@ ENV/
 *.key
 secrets/
 
-# Logs
+# Logs / artifacts / generated outputs
 *.log
 logs/
+artifacts/
+tmp/
+out/
+output/
+generated/
+.cache/
 
 # MLflow
 mlruns/
@@ -60,20 +66,39 @@ htmlcov/
 
 # Jupyter
 .ipynb_checkpoints/
+notebooks/*.ipynb_checkpoints/
 
-# Data (large) - keep small samples
+# JS (if ever added)
+node_modules/
+
+# Data (large) - keep small samples only
 data/raw/**/*.csv
 data/raw/**/*.parquet
 data/raw/**/*.pdf
+data/raw/**/*.json
 data/processed/*.parquet
 data/processed/*.csv
-!data/synthetic/*.csv
-!data/synthetic/sample_*.csv
+data/synthetic/warranty_claims.csv
+data/synthetic/vehicle_telemetry.csv
+!data/synthetic/samples/sample_*.csv
 
-# Vector stores / indexes (local)
+# Embeddings / vector caches (local)
 .pinecone/
 .chroma/
 faiss_index/
+embeddings_cache/
+*.npy
+*.npz
+
+# Demo media (large)
+demos/gifs/*.gif
+demos/videos/*.mp4
+demos/videos/*.mov
+docs/screenshots/*.png
+docs/screenshots/*.jpg
+!docs/screenshots/.gitkeep
+!demos/gifs/.gitkeep
+!demos/videos/.gitkeep
 
 # Docker
 *.tar

@@ -1,0 +1,114 @@
+# =============================================================
+# .agentignore — exclusions for AI coding agents
+#
+# Honored by OpenCode, Cursor, Copilot Workspace (best-effort), and
+# any agent that respects gitignore-style ignore files for context
+# loading. Goal: keep AI workspace indexing tight and cheap.
+#
+# Rule of thumb:
+#   - Exclude anything generated, large, or non-source.
+#   - Keep README, REPO_STATE, CHANGELOG, agent memory files,
+#     and the app/ + tests/ + scripts/ + docs/ trees.
+# =============================================================
+
+# Python build / caches
+__pycache__/
+*.py[cod]
+*$py.class
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.tox/
+.cache/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs / runtime artifacts
+*.log
+logs/
+artifacts/
+tmp/
+out/
+output/
+generated/
+
+# ML / experiment artifacts
+mlruns/
+mlartifacts/
+
+# Vector / embedding caches
+.pinecone/
+.chroma/
+faiss_index/
+embeddings_cache/
+*.npy
+*.npz
+
+# Large data (samples are kept under data/synthetic/samples/)
+data/raw/
+data/processed/
+data/synthetic/warranty_claims.csv
+data/synthetic/vehicle_telemetry.csv
+data/synthetic/technical_documents/
+
+# Demo media (binary, large)
+demos/gifs/
+demos/videos/
+docs/screenshots/
+
+# Secrets / env
+.env
+.env.*
+!.env.example
+secrets/
+
+# Terraform local state
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# JS deps (if ever added)
+node_modules/
+
+# Git internals
+.git/
+
+# OS junk
+Thumbs.db
+.DS_Store
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+notebooks/*.ipynb_checkpoints/
+
+# =============================================================
+# IMPORTANT — keep these visible to agents (do NOT add):
+#   REPO_STATE.md
+#   CHANGELOG.md
+#   CLAUDE.md / CODEX.md / OPENCODE.md / COPILOT.md
+#   README.md
+#   app/**
+#   tests/**
+#   scripts/**
+#   docs/architecture/**, docs/reports/**, docs/datasets/**
+#   infrastructure/**
+#   .github/instructions/**
+#   .claude/skills/**
+# =============================================================
