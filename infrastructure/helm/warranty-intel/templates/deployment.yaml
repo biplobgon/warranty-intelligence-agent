@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "warranty-intel.fullname" . }}
+  labels: {{- include "warranty-intel.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels: {{- include "warranty-intel.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "warranty-intel.selectorLabels" . | nindent 8 }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "{{ .Values.service.targetPort }}"
+        prometheus.io/path: "/metrics"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.targetPort }}
+              name: http
+          env:
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- if .Values.secrets.create }}
+            - name: API_KEY
+              valueFrom: { secretKeyRef: { name: {{ include "warranty-intel.fullname" . }}-secrets, key: API_KEY } }
+            - name: OPENAI_API_KEY
+              valueFrom: { secretKeyRef: { name: {{ include "warranty-intel.fullname" . }}-secrets, key: OPENAI_API_KEY } }
+            - name: PINECONE_API_KEY
+              valueFrom: { secretKeyRef: { name: {{ include "warranty-intel.fullname" . }}-secrets, key: PINECONE_API_KEY } }
+            {{- end }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
+          livenessProbe:
+            httpGet: { path: /health, port: http }
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          readinessProbe:
+            httpGet: { path: /health/ready, port: http }
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: ["ALL"] }
+          volumeMounts:
+            - { name: tmp,   mountPath: /tmp }
+            - { name: cache, mountPath: /home/app/.cache }
+      volumes:
+        - { name: tmp,   emptyDir: {} }
+        - { name: cache, emptyDir: {} }

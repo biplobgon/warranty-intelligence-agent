@@ -1,0 +1,9 @@
+apiVersion: v2
+name: warranty-intel
+description: Helm chart for the Warranty Intelligence Agent Platform.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords: [ai, llm, rag, agents, warranty, llmops]
+maintainers:
+  - name: Warranty Intelligence Platform Team

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: warranty-intel
+  labels:
+    app.kubernetes.io/part-of: warranty-intelligence-agent
+    environment: production

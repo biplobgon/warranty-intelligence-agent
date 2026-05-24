@@ -1,0 +1,57 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        type: choice
+        options: [staging, production]
+      image_tag:
+        description: Image tag (defaults to commit sha)
+        required: false
+
+permissions:
+  contents: read
+  id-token: write    # for OIDC into GCP / AWS
+
+jobs:
+  deploy:
+    name: Deploy to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set image tag
+        id: tag
+        run: |
+          if [ -n "${{ inputs.image_tag }}" ]; then
+            echo "tag=${{ inputs.image_tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Authenticate to GCP (OIDC)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_DEPLOY_SA }}
+
+      - uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER }}
+          location: ${{ secrets.GKE_LOCATION }}
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with: { version: v3.15.0 }
+
+      - name: Helm upgrade
+        run: |
+          helm upgrade --install warranty-intel infrastructure/helm/warranty-intel \
+            --namespace warranty-intel --create-namespace \
+            --set image.tag=${{ steps.tag.outputs.tag }} \
+            --set env.APP_ENV=${{ inputs.environment }} \
+            --wait --timeout 5m

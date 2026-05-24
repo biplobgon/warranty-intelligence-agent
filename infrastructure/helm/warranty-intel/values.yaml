@@ -1,0 +1,60 @@
+# Default values for warranty-intel.
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: ghcr.io/your-org/warranty-intel-api
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+replicaCount: 3
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+ingress:
+  enabled: true
+  className: nginx
+  host: api.warranty-intel.example.com
+  tls: true
+  tlsSecretName: warranty-api-tls
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+
+resources:
+  requests: { cpu: "500m", memory: "512Mi" }
+  limits:   { cpu: "2",    memory: "2Gi" }
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPUUtilization: 65
+  targetMemoryUtilization: 75
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+
+env:
+  APP_ENV: production
+  LOG_LEVEL: INFO
+  LLM_PROVIDER: openai
+  VECTOR_BACKEND: pinecone
+  ENABLE_GUARDRAILS: "true"
+  ENABLE_PII_REDACTION: "true"
+  HALLUCINATION_THRESHOLD: "0.65"
+  GROUNDING_THRESHOLD: "0.70"
+
+# Secret values are NOT placed in values.yaml directly.
+# Provide via --set or external secret operator.
+secrets:
+  create: false
+  data: {}
+
+serviceMonitor:
+  enabled: false
+  interval: 30s
+  scrapeTimeout: 10s

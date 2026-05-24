@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: warranty-api-default
+  namespace: warranty-intel
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: warranty-api
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels: { name: ingress-nginx }
+      ports:
+        - { protocol: TCP, port: 8000 }
+  egress:
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - { protocol: TCP, port: 6379 }   # redis
+        - { protocol: TCP, port: 5000 }   # mlflow
+        - { protocol: TCP, port: 4317 }   # otel
+        - { protocol: TCP, port: 443 }    # external APIs (LLM, Pinecone)
+        - { protocol: TCP, port: 53 }
+        - { protocol: UDP, port: 53 }

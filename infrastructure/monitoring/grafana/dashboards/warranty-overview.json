@@ -1,0 +1,101 @@
+{
+  "title": "Warranty Intelligence — Overview",
+  "uid": "warranty-overview",
+  "schemaVersion": 39,
+  "version": 1,
+  "tags": ["warranty", "ai", "llm"],
+  "timezone": "browser",
+  "refresh": "30s",
+  "time": { "from": "now-1h", "to": "now" },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Requests / sec",
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total[1m]))",
+          "legendFormat": "rps"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "In-flight requests",
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "targets": [
+        { "expr": "warranty_inflight_requests", "legendFormat": "inflight" }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "p95 Request Latency (s)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(warranty_request_duration_seconds_bucket[5m])) by (le, route))",
+          "legendFormat": "{{route}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "LLM tokens / minute (by model & kind)",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "targets": [
+        {
+          "expr": "sum by (model, kind) (rate(warranty_llm_token_usage_total[1m])) * 60",
+          "legendFormat": "{{model}} / {{kind}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Per-Agent latency p95 (s)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(warranty_agent_latency_seconds_bucket[5m])) by (le, agent))",
+          "legendFormat": "{{agent}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Hallucination score distribution",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.5, sum(rate(warranty_hallucination_score_bucket[10m])) by (le))",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.9, sum(rate(warranty_hallucination_score_bucket[10m])) by (le))",
+          "legendFormat": "p90"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Governance blocks / min",
+      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 20 },
+      "targets": [
+        {
+          "expr": "sum by (reason) (rate(warranty_governance_blocks_total[5m])) * 60",
+          "legendFormat": "{{reason}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Cache hit ratio",
+      "gridPos": { "h": 6, "w": 12, "x": 12, "y": 20 },
+      "targets": [
+        {
+          "expr": "sum(rate(warranty_cache_hits_total[5m])) / clamp_min(sum(rate(warranty_cache_hits_total[5m])) + sum(rate(warranty_cache_misses_total[5m])), 0.0001)",
+          "legendFormat": "hit ratio"
+        }
+      ]
+    }
+  ]
+}
