@@ -1,6 +1,6 @@
 # Enterprise Multi-Agent AI System for Warranty Analytics and Decision Intelligence
 
-**Authors:** Warranty Intelligence Platform Team
+**Author:** Biplob Gon
 **Version:** 0.1.0
 **Date:** 2026-05
 
