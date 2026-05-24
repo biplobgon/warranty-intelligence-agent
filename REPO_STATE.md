@@ -35,7 +35,9 @@ FastAPI async backend → LangGraph 6-agent workflow → hybrid RAG (Pinecone+BM
 | Ingestion | ✅ | `scripts/run_ingestion.py` |
 | Benchmark | ✅ | `scripts/eval_benchmark.py` |
 | Docs | ✅ | `README.md`, `docs/{architecture,reports,datasets,api}/` |
-| Skills/Instructions | 🟡 | `.claude/skills/`, `.github/instructions/` (stubs) |
+| Skills/Instructions | ✅ | `.claude/skills/` (13 playbooks + README), `.github/instructions/` (8 standards + README) |
+| Dataset docs | ✅ | `docs/datasets/` (sources, synthetic, schemas, chunking, governance, eval) |
+| API docs (supplemental) | ✅ | `docs/api/` (endpoints, auth, errors, rate limits, client examples) |
 | Demo media | ⏳ | user-captured (`docs/screenshots/`, `demos/`) |
 
 ## 3. Deployment status

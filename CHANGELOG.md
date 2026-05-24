@@ -7,6 +7,17 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased]
 
 ### Added
+- `.claude/skills/` — 13 reusable engineering playbooks (RAG, agents, evaluation,
+  observability, FastAPI, Docker, K8s, LLMOps, governance, hallucination,
+  prompts, async, microservices) + index README
+- `.github/instructions/` — 8 mandatory standards documents (engineering, PR,
+  commits, branching, deployment, architecture, AI governance, observability)
+  + index README
+- `docs/datasets/` — 6 docs covering public sources, synthetic methodology,
+  canonical schemas, chunking + embedding strategy, data governance, and
+  evaluation data
+- `docs/api/` — 5 supplemental API docs (endpoints reference, auth, error
+  handling, rate limits, client examples in curl/Python/TypeScript)
 - `REPO_STATE.md` — single-source-of-truth compact state file for AI agents
 - `.agentignore` — workspace-indexing exclusions for OpenCode / Cursor / Copilot
 - Low-Token Development Workflow section in `OPENCODE.md` (prompt-size rules,
