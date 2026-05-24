@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "warranty-intelligence-agent"
+version = "0.1.0"
+description = "Enterprise multi-agent AI platform for warranty analytics, RAG, and decision intelligence."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "Warranty Intelligence Platform Team" }]
+keywords = ["ai", "llm", "rag", "agents", "langgraph", "llmops", "warranty"]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["notebooks", "data", "infrastructure"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "SIM", "RUF"]
+ignore = ["E501", "B008"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101", "N802"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_unused_ignores = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+exclude = ["notebooks", "data", "infrastructure", "tests"]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-ra -q --strict-markers --cov=app --cov-report=term-missing"
+markers = [
+  "unit: fast, isolated unit tests",
+  "integration: tests that touch external systems or full app",
+  "evaluation: AI evaluation / quality benchmarks",
+  "slow: long-running tests",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["app"]
+omit = ["app/**/__init__.py"]
