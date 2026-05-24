@@ -2,7 +2,7 @@
 
 > **Enterprise multi-agent AI platform for warranty analytics, root-cause analysis, technical document intelligence, and decision support.**
 >
-> Production-grade reference architecture for applied Generative AI in regulated, mission-critical domains. Built with LangGraph, FastAPI, Pinecone, Vertex AI / OpenAI, OpenTelemetry, MLflow, and Kubernetes.
+> A Production-grade reference architecture for applied Generative AI in regulated, mission-critical domains. Built with LangGraph, FastAPI, Pinecone, Vertex AI / OpenAI, OpenTelemetry, MLflow, and Kubernetes.
 
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF?logo=githubactions&logoColor=white)](.github/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
